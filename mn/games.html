@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>新春副本：无限火力 - 春节生存RPG</title>
+    <link rel="stylesheet" href="css/style.css">
+    <base target="_blank">
+</head>
+<body class="crt">
+    <div id="game-container">
+        <!-- 开始界面 -->
+        <div id="start-screen" class="start-screen">
+            <div class="game-title">新春副本<br>🧧 无限火力 🧧</div>
+            <div class="game-subtitle">V1.0 | 冷酷绝情反派 survival RPG</div>
+            <div style="font-size: 60px; margin-bottom: 30px;">🧨👨‍👩‍👧‍👦🎮</div>
+            <button class="start-btn" onclick="game.start()">开始逃生</button>
+            <div style="margin-top: 30px; color: #666; font-size: 12px;">
+                提示：请调高音量（并没有声音）<br>
+                建议：提前准备降压药
+            </div>
+        </div>
+
+        <!-- 进度地图 -->
+        <div id="progress-map" class="progress-map hidden">
+            <div class="map-node active" data-scene="0">🚪</div>
+            <div class="map-node" data-scene="1">🍚</div>
+            <div class="map-node" data-scene="2">🍳</div>
+            <div class="map-node" data-scene="3">📱</div>
+            <div class="map-node" data-scene="4">🚽</div>
+            <div class="map-node" data-scene="5">🛏️</div>
+            <div class="map-node" data-scene="6">💬</div>
+            <div class="map-node" data-scene="7">🏘️</div>
+        </div>
+
+        <!-- 状态栏 -->
+        <div id="status-bar" class="hidden">
+            <div class="stat-item">
+                <div>
+                    <div class="stat-label">😤 耐心值</div>
+                    <div class="stat-bar"><div class="stat-fill patience-fill" id="patience-bar" style="width: 100%"></div></div>
+                </div>
+                <div class="stat-value" id="patience-val">100</div>
+            </div>
+            <div class="stat-item">
+                <div>
+                    <div class="stat-label">💰 红包余额</div>
+                    <div class="stat-bar"><div class="stat-fill money-fill" id="money-bar" style="width: 100%"></div></div>
+                </div>
+                <div class="stat-value" id="money-val">2000</div>
+            </div>
+            <div class="stat-item">
+                <div>
+                    <div class="stat-label">🎭 演技值</div>
+                    <div class="stat-bar"><div class="stat-fill acting-fill" id="acting-bar" style="width: 20%"></div></div>
+                </div>
+                <div class="stat-value" id="acting-val">20</div>
+            </div>
+            <div class="stat-item">
+                <div>
+                    <div class="stat-label">🍖 胃容量</div>
+                    <div class="stat-bar"><div class="stat-fill stomach-fill" id="stomach-bar" style="width: 50%"></div></div>
+                </div>
+                <div class="stat-value" id="stomach-val">50</div>
+            </div>
+        </div>
+
+        <!-- 场景显示区 -->
+        <div id="scene-display" class="hidden">
+            <div class="scene-title" id="scene-title">场景标题</div>
+            <div class="scene-image" id="scene-visual">
+                <div class="character-sprite" id="npc-sprite">👵</div>
+            </div>
+            <div class="dialogue-box">
+                <div class="speaker" id="speaker-name">系统提示</div>
+                <div id="dialogue-text" class="typing-effect">欢迎来到春节生存游戏...</div>
+            </div>
+        </div>
+
+        <!-- 小游戏容器 -->
+        <div id="minigame-area" class="hidden"></div>
+
+        <!-- 选择按钮区 -->
+        <div id="choices-container" class="hidden"></div>
+
+        <!-- 结局界面 -->
+        <div id="ending-screen" class="ending-screen hidden">
+            <div class="ending-rank" id="ending-rank">💀</div>
+            <div class="ending-title" id="ending-title">结局标题</div>
+            <div class="ending-desc" id="ending-desc">结局描述...</div>
+            <div style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                生存时间: <span id="survival-time">0</span><br>
+                击败亲戚: <span id="defeated-relatives">0</span> 人
+            </div>
+            <button class="restart-btn" onclick="game.restart()">再来一局</button>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>

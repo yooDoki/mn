@@ -1,0 +1,458 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    touch-action: manipulation;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #1a1a2e;
+    color: #eee;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* CRT屏幕效果 */
+.crt::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* 游戏容器 */
+#game-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #16213e;
+    min-height: 100vh;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* 顶部状态栏 */
+#status-bar {
+    background: #0f3460;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    border-bottom: 3px solid #e94560;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.stat-item {
+    background: #1a1a2e;
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #533483;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.stat-label {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #fff;
+}
+
+.stat-bar {
+    width: 100%;
+    height: 6px;
+    background: #333;
+    margin-top: 4px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    transition: width 0.3s, background-color 0.3s;
+}
+
+.patience-fill { background: #e94560; }
+.money-fill { background: #ffd700; }
+.acting-fill { background: #a29bfe; }
+.stomach-fill { background: #00b894; }
+
+/* 场景展示区 */
+#scene-display {
+    padding: 20px;
+    min-height: 300px;
+    position: relative;
+}
+
+.scene-title {
+    color: #e94560;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 2px 2px 0px #533483;
+    animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+}
+
+.scene-image {
+    width: 100%;
+    height: 200px;
+    background: #0f3460;
+    border: 3px solid #533483;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.character-sprite {
+    font-size: 80px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.dialogue-box {
+    background: #0f3460;
+    border: 2px solid #e94560;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.dialogue-box::before {
+    content: "▼";
+    position: absolute;
+    bottom: -20px;
+    left: 20px;
+    color: #e94560;
+    font-size: 20px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.speaker {
+    color: #ffd700;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.typing-effect {
+    overflow: hidden;
+    border-right: 2px solid #e94560;
+    white-space: pre-wrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* 选择按钮区 */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px 20px;
+}
+
+.choice-btn {
+    background: #533483;
+    border: 2px solid #a29bfe;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+}
+
+.choice-btn:hover, .choice-btn:active {
+    background: #a29bfe;
+    transform: translateX(5px);
+    box-shadow: -5px 0 0 #e94560;
+}
+
+.choice-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.choice-tag {
+    display: inline-block;
+    background: #e94560;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+/* 特殊游戏模式样式 */
+.minigame-container {
+    background: #0f3460;
+    border: 3px solid #e94560;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    text-align: center;
+}
+
+.barrage-container {
+    height: 200px;
+    background: #1a1a2e;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #533483;
+    margin: 10px 0;
+}
+
+.barrage-item {
+    position: absolute;
+    white-space: nowrap;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    padding: 5px 10px;
+    background: rgba(233, 69, 96, 0.8);
+    border-radius: 15px;
+}
+
+@keyframes moveLeft {
+    from { left: 100%; }
+    to { left: -100%; }
+}
+
+@keyframes moveRight {
+    from { left: -100%; }
+    to { left: 100%; }
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+.player-avatar {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+    transition: left 0.1s;
+    z-index: 5;
+}
+
+/* 结局展示 */
+.ending-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.ending-title {
+    font-size: 32px;
+    color: #e94560;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.ending-desc {
+    font-size: 18px;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-bottom: 30px;
+    color: #ddd;
+}
+
+.ending-rank {
+    font-size: 48px;
+    margin: 20px 0;
+}
+
+.restart-btn {
+    background: #e94560;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 0 #533483;
+    transition: transform 0.1s;
+}
+
+.restart-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #533483;
+}
+
+/* 开始界面 */
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #16213e;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.game-title {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ffd700;
+    text-shadow: 3px 3px 0 #e94560;
+    line-height: 1.3;
+}
+
+.game-subtitle {
+    color: #aaa;
+    margin-bottom: 40px;
+    font-size: 14px;
+}
+
+.start-btn {
+    background: linear-gradient(45deg, #e94560, #533483);
+    color: white;
+    border: 3px solid #fff;
+    padding: 20px 60px;
+    font-size: 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* 道具提示 */
+.item-notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: #00b894;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    animation: slideIn 0.5s, fadeOut 0.5s 2.5s;
+    z-index: 50;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
+
+/* 小地图/进度 */
+.progress-map {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #0f3460;
+    border-bottom: 2px solid #533483;
+}
+
+.map-node {
+    width: 30px;
+    height: 30px;
+    background: #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: 2px solid #666;
+}
+
+.map-node.active {
+    background: #e94560;
+    border-color: #ffd700;
+    animation: pulse 1s infinite;
+}
+
+.map-node.completed {
+    background: #00b894;
+    border-color: #fff;
+}
+
+/* 响应式 */
+@media (max-width: 600px) {
+    .game-title { font-size: 28px; }
+    .scene-title { font-size: 20px; }
+    .choice-btn { font-size: 14px; padding: 12px; }
+}
+
+/* 隐藏类 */
+.hidden { display: none !important; }
